@@ -1,9 +1,9 @@
 import { Task } from "@lit-labs/task";
-import { ReactiveControllerHost } from "lit";
+import { ReactiveElement } from "lit";
 import { apiUrl } from "./config/index.js";
 
 /**
- * @param {ReactiveControllerHost} host Host element
+ * @param {ReactiveElement} host Host element
  * @returns {Task} Api task controller
  */
 export function topStories(host) {

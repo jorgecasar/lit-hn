@@ -1,8 +1,15 @@
 import { LitElement, html } from "lit";
 import { ScopedRegistryHost } from "@lit-labs/scoped-registry-mixin";
 import { topStories } from "../api/topStories.js";
+import { HnStory } from "../hn-story/HnStory.js";
 
 export class HnTopstories extends ScopedRegistryHost(LitElement) {
+  static get elementDefinitions() {
+    return {
+      "hn-story": HnStory,
+    };
+  }
+
   constructor() {
     super();
     this.api = topStories(this);
@@ -11,7 +18,6 @@ export class HnTopstories extends ScopedRegistryHost(LitElement) {
   render() {
     return html`
       ${this.api.render({
-        initial: () => import("../hn-story/hn-story.js"),
         pending: () => html`Loading topstories...`,
         complete: (result) => html`<ol>
           ${result.map(
