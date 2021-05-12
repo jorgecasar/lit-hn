@@ -1,9 +1,18 @@
+import { ScopedRegistryHost } from "@lit-labs/scoped-registry-mixin";
 import { LitElement, html } from "lit";
-import "./hn-footer/hn-footer.js";
-import "./hn-header/hn-header.js";
-import "./hn-topstories/hn-topstories.js";
+import { HnFooter } from "./hn-footer/HnFooter.js";
+import { HnHeader } from "./hn-header/HnHeader.js";
+import { HnTopstories } from "./hn-topstories/HnTopstories.js";
 
-export class LitHn extends LitElement {
+export class LitHn extends ScopedRegistryHost(LitElement) {
+  static get elementDefinitions() {
+    return {
+      "hn-footer": HnFooter,
+      "hn-header": HnHeader,
+      "hn-topstories": HnTopstories,
+    };
+  }
+
   // eslint-disable-next-line class-methods-use-this
   render() {
     return html`

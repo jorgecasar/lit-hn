@@ -1,13 +1,19 @@
 import { LitElement, html } from "lit";
-import { ScopedRegistryHost } from "@lit-labs/scoped-registry-mixin";
 
-export class HnStory extends ScopedRegistryHost(LitElement) {
+export class HnStory extends LitElement {
   static get properties() {
     return {
       key: {
         type: String,
       },
     };
+  }
+
+  constructor() {
+    super();
+
+    /** @type {string|undefined} */
+    this.key = undefined;
   }
 
   render() {
