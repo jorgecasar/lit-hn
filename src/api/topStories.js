@@ -11,7 +11,7 @@ export function topStories(host) {
     host,
     async ([url]) =>
       (
-        await fetch(`${url}/topstories.json?limitToFirst=30&orderBy=%22$key%22`)
+        await fetch(`${url}/news/1.json`)
       ).json(),
     () => [apiUrl]
   );

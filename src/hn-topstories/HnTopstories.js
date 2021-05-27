@@ -21,8 +21,8 @@ export class HnTopstories extends ScopedRegistryHost(LitElement) {
         pending: () => html`Loading topstories...`,
         complete: (result) => html`<ol>
           ${result.map(
-            (/** @type {string} */ key) =>
-              html`<li><hn-story key="${key}"></hn-story></li>`
+            (/** @type {object} */ story) =>
+              html`<li><hn-story .story="${story}"></hn-story></li>`
           )}
         </ol>`,
       })}

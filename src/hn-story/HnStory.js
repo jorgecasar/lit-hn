@@ -3,8 +3,8 @@ import { LitElement, html } from "lit";
 export class HnStory extends LitElement {
   static get properties() {
     return {
-      key: {
-        type: String,
+      story: {
+        type: Object,
       },
     };
   }
@@ -12,11 +12,11 @@ export class HnStory extends LitElement {
   constructor() {
     super();
 
-    /** @type {string|undefined} */
-    this.key = undefined;
+    /** @type {Object|undefined} */
+    this.story = {};
   }
 
   render() {
-    return html` <div>Key: ${this.key}</div> `;
+    return html` <div>id: ${this.story.id}</div> `;
   }
 }
