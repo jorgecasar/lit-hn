@@ -12,11 +12,15 @@ export class HnStory extends LitElement {
   constructor() {
     super();
 
-    /** @type {Object|undefined} */
+    /** @type {object|undefined} */
     this.story = {};
   }
 
   render() {
-    return html` <div>id: ${this.story.id}</div> `;
+		const { title, url, user, time_ago, points, domain} = this.story;
+    return html`
+			<h2>${title} <span>(<a href="${url}">${domain}</a>)</span></h2>
+			<p>${points} by ${user} ${time_ago}</p>
+		`;
   }
 }
