@@ -1,4 +1,4 @@
-import { LitElement, html } from "lit";
+import { LitElement, html, nothing } from "lit";
 
 export class HnStory extends LitElement {
   static get properties() {
@@ -19,7 +19,7 @@ export class HnStory extends LitElement {
   render() {
 		const { title, url, user, time_ago, points, domain} = this.story;
     return html`
-			<h2>${title} <span>(<a href="${url}">${domain}</a>)</span></h2>
+			<h2>${title}${domain ? html`<span> (<a href="${url}">${domain}</a>)</span>`: nothing}</h2>
 			<p>${points} by ${user} ${time_ago}</p>
 		`;
   }
