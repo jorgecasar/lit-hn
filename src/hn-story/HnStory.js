@@ -17,10 +17,14 @@ export class HnStory extends LitElement {
   }
 
   render() {
-		const { title, url, user, time_ago, points, domain} = this.story;
+    const { title, url, user, time_ago, points, domain } = this.story;
     return html`
-			<h2>${title}${domain ? html`<span> (<a href="${url}">${domain}</a>)</span>`: nothing}</h2>
-			<p>${points} by ${user} ${time_ago}</p>
-		`;
+      <h2>
+        ${title}${domain
+          ? html`<span> (<a href="${url}">${domain}</a>)</span>`
+          : nothing}
+      </h2>
+      <p>${points} by ${user} ${time_ago}</p>
+    `;
   }
 }

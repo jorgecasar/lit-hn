@@ -12,13 +12,13 @@ export class HnAsk extends ScopedRegistryHost(LitElement) {
 
   constructor() {
     super();
-    this.api = fetchFeeds(this, { feed: 'ask', page: 1});
+    this.api = fetchFeeds(this, { feed: "ask", page: 1 });
   }
 
   render() {
     return html`
       ${this.api.render({
-        pending: () => html`Loading topstories...`,
+        pending: () => html`Loading...`,
         complete: (result) => html`<ol>
           ${result.map(
             (/** @type {object} */ story) =>

@@ -9,10 +9,11 @@ import { apiUrl } from "./config/index.js";
  * @param {number} data.page page number
  * @returns {Task} Api task controller
  */
-export function fetchFeeds(host, { feed = 'news', page = 1} ) {
+export function fetchFeeds(host, { feed = "news", page = 1 }) {
   return new Task(
     host,
-    (async ([feed, page]) => (await fetch(`${apiUrl}/${feed}/${page}.json`)).json()),
+    async ([feed, page]) =>
+      (await fetch(`${apiUrl}/${feed}/${page}.json`)).json(),
     () => [feed, page]
   );
 }
