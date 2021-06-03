@@ -48,7 +48,7 @@ export class Router {
     this.route = this.routes.find((route) => route.path === pathname);
     const { elementDefinitions } = this.route;
     if (elementDefinitions) {
-      const { registry = window } = this.host.constructor;
+      const { registry = window.customElements } = this.host.constructor;
       Object.entries(elementDefinitions).forEach(([tagName, klass]) => {
         if (!registry.get(tagName)) {
           registry.define(tagName, klass);
