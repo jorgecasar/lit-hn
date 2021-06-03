@@ -6,6 +6,8 @@ export class HnHeader extends ScopedRegistryHost(LitElement) {
 	static get styles() {
 		return css`
 			:host {
+				position: sticky;
+				top: 0;
 				display:flex;
 				align-items: center;
 				gap: 1rem;

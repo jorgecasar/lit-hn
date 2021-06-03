@@ -1,20 +1,19 @@
 import { html } from "lit";
-import { HnNews } from "./hn-news/HnNews.js";
-import { HnAsk } from "./hn-ask/HnAsk.js";
+import { HnStoryList } from "./hn-story-list/HnStoryList.js";
 
 export const routes = [
   {
     path: "/",
     elementDefinitions: {
-      "hn-news": HnNews,
+      "hn-story-list": HnStoryList,
     },
-    render: () => html`<hn-news></hn-news>`,
+    render: () => html`<hn-story-list feed="news"></hn-story-list>`,
   },
   {
     path: "/ask",
     elementDefinitions: {
-      "hn-ask": HnAsk,
+      "hn-story-list": HnStoryList,
     },
-    render: () => html`<hn-ask></hn-ask>`,
+    render: () => html`<hn-story-list feed="ask"></hn-story-list>`,
   },
 ];

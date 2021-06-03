@@ -13,6 +13,9 @@ export class LitHn extends ScopedRegistryHost(LitElement) {
 			--primary-color: #325cff;
 			--primary-color-contrast: #fff;
 		}
+		main {
+			padding: 1rem 0.5rem;
+		}
 		`;
 	}
 
