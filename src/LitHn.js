@@ -10,11 +10,21 @@ export class LitHn extends ScopedRegistryHost(LitElement) {
 	static get styles() {
 		return css`
 		:host {
-			--primary-color: #325cff;
+			--primary-color-base: #325cff;
 			--primary-color-contrast: #fff;
+			--surface-0-color-base: #fff;
+			--surface-0-color-contrast: #333;
+			overflow: hidden;
+			height: 100%;
+			display: flex;
+			flex-direction: column;
+			background: var(--surface-0-color-base);
+			color: var(--surface-0-color-contrast);
 		}
 		main {
 			padding: 1rem 0.5rem;
+			overflow-y: auto;
+			flex: 1;
 		}
 		`;
 	}
@@ -36,7 +46,7 @@ export class LitHn extends ScopedRegistryHost(LitElement) {
     return html`
       <hn-header></hn-header>
       <main>${this.router.render()}</main>
-      <hn-footer> Footer </hn-footer>
+      <hn-footer></hn-footer>
     `;
   }
 }

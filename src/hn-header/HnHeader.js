@@ -1,10 +1,13 @@
 import { LitElement, html, css } from "lit";
 import { ScopedRegistryHost } from "@lit-labs/scoped-registry-mixin";
+import navStyles from '../styles/nav.js';
 
 export class HnHeader extends ScopedRegistryHost(LitElement) {
 
 	static get styles() {
-		return css`
+		return [
+			navStyles,
+			css`
 			:host {
 				position: sticky;
 				top: 0;
@@ -12,42 +15,25 @@ export class HnHeader extends ScopedRegistryHost(LitElement) {
 				align-items: center;
 				gap: 1rem;
 				padding: 0.5rem;
-				background: var(--primary-color);
+				background: var(--primary-color-base);
 				color: var(--primary-color-contrast);
+				box-shadow: 0 2px 4px rgb(0 0 0 / 50%);
+				height: 3rem;
 			}
 			img {
 				flex: 0;
-				height: 3.25rem;
-    		width: 2.6rem;
-			}
-			nav {
-				flex: 1 0 auto;
-				display: flex;
-				flex-direction: column;
-				gap: 0.5rem;
+				height: 100%;
 			}
 			h1 {
 				margin: 0;
 				font-size: 1.2rem;
 			}
-			ul {
-				margin: 0;
-				padding: 0;
-				list-style: none;
-				display: flex;
-				gap: 0.5rem;
+			@media screen and (min-width: 1024px) {
+				:host {
+					height: 1.5rem;
+				}
 			}
-
-			li:not(:last-child)  {
-				padding-right: 0.5rem;
-				border-right: 1px solid var(--primary-color-contrast);
-			}
-
-			a {
-				color: var(--primary-color-contrast);
-				text-decoration: none;
-			}
-		`;
+		`];
 	}
 
   // eslint-disable-next-line class-methods-use-this
