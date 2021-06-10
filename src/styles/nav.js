@@ -25,6 +25,11 @@ a {
 	color: var(--primary-color-contrast);
 	text-decoration: none;
 }
+
+span {
+	font-weight: bold;
+}
+
 @media screen and (min-width: 1024px) {
 	nav {
 		display: flex;

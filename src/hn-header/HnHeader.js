@@ -1,6 +1,7 @@
 import { LitElement, html, css } from "lit";
 import { ScopedRegistryHost } from "@lit-labs/scoped-registry-mixin";
 import navStyles from '../styles/nav.js';
+import { Router } from "../router/index.js";
 
 export class HnHeader extends ScopedRegistryHost(LitElement) {
 
@@ -36,16 +37,28 @@ export class HnHeader extends ScopedRegistryHost(LitElement) {
 		`];
 	}
 
+	constructor() {
+		super();
+		this.router = new Router(this, [
+				{
+					path: "/:feed?",
+					render: params => html`<ul>
+						<li>
+							${!params.feed || params.feed === 'news' ? html`<span>news</span>` : html`<a href="/">news</a>`}
+						</li>
+						<li>${params.feed === 'ask' ? html`<span>ask</span>` : html`<a href="/ask">ask</a>`}</li>
+					</ul>`
+				},
+		]);
+	}
+
   // eslint-disable-next-line class-methods-use-this
   render() {
     return html`
 		<img src="https://lit.dev/images/flame-favicon.svg" alt="Logo Lit"/>
 		<nav>
 			<h1>Hacker News Lit</h1>
-			<ul>
-				<li><a href="./">news</a></li>
-				<li><a href="./ask">ask</a></li>
-			</ul>
+			${this.router.render()}
 		</nav>
 			`;
   }
