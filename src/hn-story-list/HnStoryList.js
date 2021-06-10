@@ -17,12 +17,12 @@ export class HnStoryList extends LitElement {
 			padding-inline-start: 2rem;
 		}
 		li::marker {
-			color: #828282;
+			color: #595959;
 		}
 
 		a {
 			display: inline-block;
-			color: #828282;
+			color: #595959;
 			text-decoration: none;
 			margin-block-start: 1rem;
 			margin-inline-start: 2rem;

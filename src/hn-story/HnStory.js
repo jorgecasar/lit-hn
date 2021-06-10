@@ -26,7 +26,7 @@ export class HnStory extends LitElement {
 			font-weight: 400;
 		}
 		p, span, a {
-			color: #828282;
+			color: #595959;
 			font-size: 0.8rem;
 		}
 
