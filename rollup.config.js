@@ -32,7 +32,10 @@ export default merge(baseConfig, {
 
 	plugins: [
     copy({
-      targets: [{ src: 'netlify.toml', dest: './dist' }],
+      targets: [
+				{ src: 'netlify.toml', dest: './dist' },
+				{ src: 'robots.txt', dest: './dist' }
+			],
       // set flatten to false to preserve folder structure
       flatten: false,
     }),
