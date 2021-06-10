@@ -40,7 +40,7 @@ export class HnHeader extends LitElement {
 		super();
 		this.router = new Router(this, [
 				{
-					path: "/:feed?",
+					path: "/:feed?/:page?",
 					render: params => html`<ul>
 						<li>
 							${!params.feed || params.feed === 'news' ? html`<span>news</span>` : html`<a href="/">news</a>`}
