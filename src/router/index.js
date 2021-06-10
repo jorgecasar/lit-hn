@@ -1,110 +1,149 @@
-import { nothing } from "lit";
-
+import { Route } from "./route.js";
 /**
+ * @typedef {import('lit').ReactiveController} ReactiveController
  * @typedef {import('lit').ReactiveControllerHost} ReactiveControllerHost
  */
 
+const __list = new Set();
+
+/**
+ * Page received a click
+ *
+ * @param {MouseEvent} e Click event
+ */
+ const onClick = e => {
+	if(e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey ) {
+		return;
+	}
+	const anchor = /** @type {HTMLAnchorElement} */(e.composedPath().filter(target => target.tagName === "A")[0]);
+	if (!anchor || anchor.target || anchor.hasAttribute("download") || anchor.getAttribute("rel") === "external") {
+		return;
+	}
+
+	const { href } = anchor;
+	if (!href || href.indexOf("mailto:") !== -1) {
+		return;
+	}
+
+	const { location } = window;
+	const origin = location.origin || `${location.protocol}//${location.host}`;
+	if (href.indexOf(origin) !== 0) return;
+	e.preventDefault();
+	if (href !== location.href) {
+		window.history.pushState({}, "", href);
+		__list.forEach(instance => instance.locationChanged(location, e));
+	}
+}
+
+/**
+ * Window popstate event
+ *
+ * @param {Event} e Click event
+ */
+const onPopstate = (e) => {
+	__list.forEach((router) => router.locationChanged(window.location, e));
+};
+
+/**
+ *
+ * @param {Router} instance Router instance
+ */
+const setupListeners = (instance) => {
+	if(__list.size === 0) {
+		document.body.addEventListener("click", onClick);
+		window.addEventListener("popstate", onPopstate);
+	}
+	__list.add(instance);
+};
+
+/**
+ *
+ * @param {Router} instance Router instance
+ */
+const teardownListeners = (instance) => {
+	__list.delete(instance);
+	if(__list.size === 0) {
+		document.body.removeEventListener("click", onClick);
+		window.removeEventListener("popstate", onPopstate);
+	}
+};
+
+/**
+ * @implements {ReactiveController}
+ */
 export class Router {
-  /**
-   *
-   * @param {ReactiveControllerHost} host Reactive controller host
-   * @param {object[]} routes Array of routes
-   */
-  constructor(host, routes) {
-    this.host = host;
-    this.host.addController(this);
-    this.routes = routes;
-    this.route = null;
-    this.__onClick = this.__onClick.bind(this);
-    this.__onPopstate = this.__onPopstate.bind(this);
-  }
+	/**
+	 *
+	 * @param {ReactiveControllerHost} host Reactive controller host
+	 * @param {Route[]} routes Array of routes
+	 */
+	constructor(host, routes = []) {
+		this.host = host;
+		/** @type {Route[]} */
+		this.routes = [];
+		this.addRoutes(routes);
+		this.host.addController(this);
+	}
 
-  hostConnected() {
-    this.setupListeners();
-    this.locationChanged(window.location);
-  }
+	static get list() {
+		return __list;
+	}
 
-  hostDisconnected() {
-    this.teardownListeners();
-  }
+	hostConnected() {
+		setupListeners(this);
+		this.locationChanged(window.location);
+	}
 
-  setupListeners() {
-    document.body.addEventListener("click", this.__onClick);
-    window.addEventListener("popstate", this.__onPopstate);
-  }
+	hostDisconnected() {
+		teardownListeners(this);
+	}
 
-  teardownListeners() {
-    document.body.removeEventListener("click", this.__onClick);
-    window.removeEventListener("popstate", this.__onPopstate);
-  }
+	render() {
+		return this.route ? this.route.render(this.route.params) : null;
+	}
 
-  /**
-   *
-   * @param {Location} location Current Location
-   * @param {Event | null=} e Event that throw location changed
-   */
-  locationChanged(location, e) {
-    const { pathname } = location;
-    this.route = this.routes.find((route) => route.path === pathname);
-    const { elementDefinitions } = this.route;
-    if (elementDefinitions) {
-      const { registry = window.customElements } = this.host.constructor;
-      Object.entries(elementDefinitions).forEach(([tagName, klass]) => {
-        if (!registry.get(tagName)) {
-          registry.define(tagName, klass);
-        }
-      });
-    }
-    this.host.requestUpdate();
-  }
+	registerElementDefinitions() {
+		const elementDefinitions = this.route?.elementDefinitions || {};
+		const { registry = window.customElements } = this.constructor;
+		Object.entries(elementDefinitions).forEach(([tagName, klass]) => {
+			if (!registry.get(tagName)) {
+				registry.define(tagName, klass);
+			}
+		});
+	}
 
-  render() {
-    return this.route ? this.route.render() : nothing;
-  }
+	/**
+	 *
+	 * @param {Location} location Current Location
+	 */
+	locationChanged(location) {
+		this.route = this.matchRoute(location);
+		this.registerElementDefinitions();
+		this.host.requestUpdate();
+	}
 
-  /**
-   * Page received a click
-   *
-   * @param {Event} e Click event
-   */
-  __onClick(e) {
-    if (
-      e.defaultPrevented ||
-      e.button !== 0 ||
-      e.metaKey ||
-      e.ctrlKey ||
-      e.shiftKey
-    )
-      return;
-    const anchor = e.composedPath().filter((item) => item.tagName === "A")[0];
-    if (
-      !anchor ||
-      anchor.target ||
-      anchor.hasAttribute("download") ||
-      anchor.getAttribute("rel") === "external"
-    )
-      return;
+	/**
+	 *
+	 * @param {Route[]} routes Routes array
+	 */
+	addRoutes(routes) {
+		routes.forEach(route => this.addRoute(route));
+	}
 
-    const { href } = anchor;
-    if (!href || href.indexOf("mailto:") !== -1) return;
+	/**
+	 *
+	 * @param {Route} route route definition
+	 */
+	addRoute(route) {
+		this.routes.push(new Route(route));
+	}
 
-    const { location } = window;
-    const origin = location.origin || `${location.protocol}//${location.host}`;
-    if (href.indexOf(origin) !== 0) return;
-
-    e.preventDefault();
-    if (href !== location.href) {
-      window.history.pushState({}, "", href);
-      this.locationChanged(location, e);
-    }
-  }
-
-  /**
-   * Window popstate event
-   *
-   * @param {Event} e Click event
-   */
-  __onPopstate(e) {
-    this.locationChanged(window.location, e);
-  }
+	/**
+	 *
+	 * @param {Location} location Location instance
+	 * @returns {Route | undefined} route that match
+	 */
+	matchRoute(location) {
+		return this.routes.find((route) => route.match(location));
+	}
 }

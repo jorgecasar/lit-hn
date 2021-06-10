@@ -32,7 +32,8 @@
     "eslint-plugin-import": "^2.0.0",
     "eslint-plugin-lit": "^1.0.0",
     "eslint-plugin-wc": "^1.0.0",
-    "lit": "^2.0.0-rc.2"
+    "lit": "^2.0.0-rc.2",
+    "path-to-regexp": "^6.2.0"
   },
   "devDependencies": {
     "@open-wc/building-rollup": "^1.0.0",

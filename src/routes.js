@@ -3,17 +3,10 @@ import { HnStoryList } from "./hn-story-list/HnStoryList.js";
 
 export const routes = [
   {
-    path: "/",
+    path: "/:feed?/:page(\\d+)?",
     elementDefinitions: {
       "hn-story-list": HnStoryList,
     },
-    render: () => html`<hn-story-list feed="news"></hn-story-list>`,
-  },
-  {
-    path: "/ask",
-    elementDefinitions: {
-      "hn-story-list": HnStoryList,
-    },
-    render: () => html`<hn-story-list feed="ask"></hn-story-list>`,
+    render: params => html`<hn-story-list feed="${params.feed}" page="${params.page}"></hn-story-list>`
   },
 ];

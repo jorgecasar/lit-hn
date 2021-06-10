@@ -1,7 +1,7 @@
 import { LitElement, html, css } from "lit";
 import { ScopedRegistryHost } from "@lit-labs/scoped-registry-mixin";
 import { Task } from "@lit-labs/task";
-import { fetchFeeds } from "../api/index.js";
+import { FeedsController } from "../api/index.js";
 import { HnStory } from "../hn-story/HnStory.js";
 
 export class HnStoryList extends ScopedRegistryHost(LitElement) {
@@ -26,6 +26,14 @@ export class HnStoryList extends ScopedRegistryHost(LitElement) {
 		li::marker {
 			color: #828282;
 		}
+
+		a {
+			display: inline-block;
+			color: #828282;
+			text-decoration: none;
+			margin-block-start: 1rem;
+			margin-inline-start: 2rem;
+		}
 		`;
 	}
 
@@ -46,41 +54,57 @@ export class HnStoryList extends ScopedRegistryHost(LitElement) {
 
 	constructor() {
 		super();
-		this.feed = "news";
+		this.feed = 'news';
 		this.page = 1;
+		this.api = new FeedsController(this);
 	}
 
-	connectedCallback() {
-		super.connectedCallback();
-		const { feed, page } = this;
-		this.api = fetchFeeds(this, { feed, page });
+	update(propChanged) {
+		super.update(propChanged);
+		this.feed = this.feed || 'news';
+		this.page = this.page || 1;
 	}
 
 	/**
-	*
-	* @returns {object} html template
-	*/
+	 *
+	 * @returns {object} html template
+	 */
 	renderError() {
-		return html`Error`;
+		return html`Error loading ${this.feed} page ${this.page}`;
 	}
 
 	/**
-	*
-	* @returns {object} html template
-	*/
+	 *
+	 * @returns {object} html template
+	 */
 	renderPending() {
-		return html`Loading...`;
+		return html`Loading ${this.feed} page ${this.page}...`;
 	}
 
 	/**
-	*
-	* @param {object[]} result stories
-	* @returns {object} html template
-	*/
+	 *
+	 * @param {object[]} result stories
+	 * @returns {object} html template
+	 */
 	renderComplete(result) {
+		return [
+			result.length ? this.renderList(result) : this.renderEmpty(),
+			result.length === 30 ? this.renderLoadMore(): ''
+		];
+	}
+
+	renderList(result) {
 		return html`<ol start="${(this.page - 1) * 30 + 1}">
-		${result.map(story => html`<li><hn-story .story="${story}"></hn-story></li>`)}
-		</ol>`
+			${result.map(story => html`<li><hn-story .story="${story}"></hn-story></li>`)}
+		</ol>`;
+	}
+
+	renderEmpty() {
+		return "There are no rsoults";
+	}
+
+	renderLoadMore() {
+		return html`<a href="/${this.feed}/${this.page+1}/">Load more</a>`;
 	}
 
 	render() {
