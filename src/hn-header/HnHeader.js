@@ -45,7 +45,7 @@ export class HnHeader extends LitElement {
 						<li>
 							${!params.feed || params.feed === 'news' ? html`<span>news</span>` : html`<a href="/">news</a>`}
 						</li>
-						<li>${params.feed === 'ask' ? html`<span>ask</span>` : html`<a href="/ask">ask</a>`}</li>
+						<li>${params.feed === 'ask' ? html`<span>ask</span>` : html`<a href="/ask/">ask</a>`}</li>
 					</ul>`
 				},
 		]);
