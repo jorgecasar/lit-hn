@@ -1,16 +1,9 @@
 import { LitElement, html, css } from "lit";
-import { ScopedRegistryHost } from "@lit-labs/scoped-registry-mixin";
 import { Task } from "@lit-labs/task";
 import { FeedsController } from "../api/index.js";
-import { HnStory } from "../hn-story/HnStory.js";
+import "../hn-story/hn-story.js";
 
-export class HnStoryList extends ScopedRegistryHost(LitElement) {
-	static get elementDefinitions() {
-		return {
-			"hn-story": HnStory,
-		};
-	}
-
+export class HnStoryList extends LitElement {
 	static get styles() {
 		return css`
 		:host {

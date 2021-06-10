@@ -1,8 +1,7 @@
 import { LitElement, html, css } from "lit";
-import { ScopedRegistryHost } from "@lit-labs/scoped-registry-mixin";
 import navStyles from '../styles/nav.js';
 
-export class HnFooter extends ScopedRegistryHost(LitElement) {
+export class HnFooter extends LitElement {
 
 	static get styles() {
 		return [navStyles,

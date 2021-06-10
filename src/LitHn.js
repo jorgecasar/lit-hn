@@ -1,11 +1,10 @@
-import { ScopedRegistryHost } from "@lit-labs/scoped-registry-mixin";
 import { LitElement, html, css } from "lit";
-import { HnFooter } from "./hn-footer/HnFooter.js";
-import { HnHeader } from "./hn-header/HnHeader.js";
 import { Router } from "./router/index.js";
 import { routes } from "./routes.js";
+import "./hn-footer/hn-footer.js";
+import "./hn-header/hn-header.js";
 
-export class LitHn extends ScopedRegistryHost(LitElement) {
+export class LitHn extends LitElement {
 
 	static get styles() {
 		return css`
@@ -28,13 +27,6 @@ export class LitHn extends ScopedRegistryHost(LitElement) {
 		}
 		`;
 	}
-
-  static get elementDefinitions() {
-    return {
-      "hn-footer": HnFooter,
-      "hn-header": HnHeader,
-    };
-  }
 
   constructor() {
     super();

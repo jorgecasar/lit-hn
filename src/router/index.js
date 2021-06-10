@@ -104,7 +104,7 @@ export class Router {
 
 	registerElementDefinitions() {
 		const elementDefinitions = this.route?.elementDefinitions || {};
-		const { registry = window.customElements } = this.constructor;
+		const { registry = window.customElements } = this.host.constructor;
 		Object.entries(elementDefinitions).forEach(([tagName, klass]) => {
 			if (!registry.get(tagName)) {
 				registry.define(tagName, klass);

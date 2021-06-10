@@ -18,7 +18,7 @@
     "lint:prettier": "prettier \"**/*.{js,md,json}\" --check",
     "lint:types": "tsc",
     "start": "web-dev-server --root-dir . --app-index index.html --open --node-resolve --compatibility none",
-    "start:build": "npm run build && web-dev-server --root-dir dist --app-index index.html --open --compatibility none",
+    "start:build": "web-dev-server --root-dir dist --app-index index.html --open --compatibility none",
     "test": "web-test-runner --coverage",
     "test:watch": "web-test-runner --watch",
     "types": "run-s types:clear types:build",
@@ -26,14 +26,12 @@
     "types:clear": "rimraf types/"
   },
   "dependencies": {
-    "@lit-labs/scoped-registry-mixin": "^1.0.0-rc.1",
     "@lit-labs/task": "^1.0.0-rc.2",
-    "@webcomponents/scoped-custom-element-registry": "^0.0.1",
     "eslint-plugin-import": "^2.0.0",
     "eslint-plugin-lit": "^1.0.0",
     "eslint-plugin-wc": "^1.0.0",
     "lit": "^2.0.0-rc.2",
-    "path-to-regexp": "^6.2.0"
+    "path-to-regexp": "^6.0.0"
   },
   "devDependencies": {
     "@open-wc/building-rollup": "^1.0.0",
